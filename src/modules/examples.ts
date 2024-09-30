@@ -20,55 +20,55 @@ function example(
 }
 
 export class BasicExampleFactory {
-  @example
-  static registerNotifier() {
-    const callback = {
-      notify: async (
-        event: string,
-        type: string,
-        ids: number[] | string[],
-        extraData: { [key: string]: any },
-      ) => {
-        if (!addon?.data.alive) {
-          this.unregisterNotifier(notifierID);
-          return;
-        }
-        addon.hooks.onNotify(event, type, ids, extraData);
-      },
-    };
+  // @example
+  // static registerNotifier() {
+  //   const callback = {
+  //     notify: async (
+  //       event: string,
+  //       type: string,
+  //       ids: number[] | string[],
+  //       extraData: { [key: string]: any },
+  //     ) => {
+  //       if (!addon?.data.alive) {
+  //         this.unregisterNotifier(notifierID);
+  //         return;
+  //       }
+  //       addon.hooks.onNotify(event, type, ids, extraData);
+  //     },
+  //   };
 
-    // Register the callback in Zotero as an item observer
-    const notifierID = Zotero.Notifier.registerObserver(callback, [
-      "tab",
-      "item",
-      "file",
-    ]);
+  //   // Register the callback in Zotero as an item observer
+  //   const notifierID = Zotero.Notifier.registerObserver(callback, [
+  //     "tab",
+  //     "item",
+  //     "file",
+  //   ]);
 
-    // Unregister callback when the window closes (important to avoid a memory leak)
-    window.addEventListener(
-      "unload",
-      (e: Event) => {
-        this.unregisterNotifier(notifierID);
-      },
-      false,
-    );
-  }
+  //   // Unregister callback when the window closes (important to avoid a memory leak)
+  //   window.addEventListener(
+  //     "unload",
+  //     (e: Event) => {
+  //       this.unregisterNotifier(notifierID);
+  //     },
+  //     false,
+  //   );
+  // }
 
-  @example
-  static exampleNotifierCallback() {
-    new ztoolkit.ProgressWindow(config.addonName)
-      .createLine({
-        text: "Open Tab Detected!",
-        type: "success",
-        progress: 100,
-      })
-      .show();
-  }
+  // @example
+  // static exampleNotifierCallback() {
+  //   new ztoolkit.ProgressWindow(config.addonName)
+  //     .createLine({
+  //       text: "Open Tab Detected!",
+  //       type: "success",
+  //       progress: 100,
+  //     })
+  //     .show();
+  // }
 
-  @example
-  private static unregisterNotifier(notifierID: string) {
-    Zotero.Notifier.unregisterObserver(notifierID);
-  }
+  // @example
+  // private static unregisterNotifier(notifierID: string) {
+  //   Zotero.Notifier.unregisterObserver(notifierID);
+  // }
 
   // @example
   // static registerPrefs() {

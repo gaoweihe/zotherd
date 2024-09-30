@@ -25,7 +25,7 @@ async function onStartup() {
   // BasicExampleFactory.registerPrefs(); 
   ZotherdFactory.registerPrefs(); 
 
-  BasicExampleFactory.registerNotifier();
+  ZotherdFactory.registerNotifier();
 
   KeyExampleFactory.registerShortcuts();
 
@@ -114,14 +114,22 @@ async function onNotify(
 ) {
   // You can add your code to the corresponding notify type
   ztoolkit.log("notify", event, type, ids, extraData);
+
+  // if (
+  //   event == "select" &&
+  //   type == "tab" &&
+  //   extraData[ids[0]].type == "reader"
+  // ) {
+  //   BasicExampleFactory.exampleNotifierCallback();
+  // } else {
+  //   return; 
+  // }
+
   if (
-    event == "select" &&
-    type == "tab" &&
-    extraData[ids[0]].type == "reader"
+    event == "add" &&
+    type == "item"
   ) {
-    BasicExampleFactory.exampleNotifierCallback();
-  } else {
-    return;
+    ZotherdFactory.onAddItem(event, type, ids, extraData); 
   }
 }
 
