@@ -13,7 +13,10 @@ class Addon {
       current: any;
     };
     prefs?: {
-      window: Window;
+      window: Window; 
+      webdav_root: string, 
+      webdav_username: string, 
+      webdav_password: string, 
       columns: Array<ColumnOptions>;
       rows: Array<{ [dataKey: string]: string }>;
     };

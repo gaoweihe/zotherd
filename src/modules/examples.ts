@@ -70,15 +70,15 @@ export class BasicExampleFactory {
     Zotero.Notifier.unregisterObserver(notifierID);
   }
 
-  @example
-  static registerPrefs() {
-    Zotero.PreferencePanes.register({
-      pluginID: config.addonID,
-      src: rootURI + "chrome/content/preferences.xhtml",
-      label: getString("prefs-title"),
-      image: `chrome://${config.addonRef}/content/icons/favicon.png`,
-    });
-  }
+  // @example
+  // static registerPrefs() {
+  //   Zotero.PreferencePanes.register({
+  //     pluginID: config.addonID,
+  //     src: rootURI + "chrome/content/preferences.xhtml",
+  //     label: getString("prefs-title"),
+  //     image: `chrome://${config.addonRef}/content/icons/favicon.png`,
+  //   });
+  // }
 }
 
 export class KeyExampleFactory {
@@ -135,9 +135,9 @@ export class UIExampleFactory {
       },
     });
     document.documentElement.appendChild(styles);
-    document
-      .getElementById("zotero-item-pane-content")
-      ?.classList.add("makeItRed");
+    // document
+    //   .getElementById("zotero-item-pane-content")
+    //   ?.classList.add("makeItRed");
   }
 
   @example

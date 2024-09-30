@@ -1,5 +1,12 @@
-pref-title = Addon Template Example
+pref-title = ZotHerd
 pref-enable =
-    .label = Enable
+    .label = Enabled
 pref-input = Input
+pref-webdav-title = WebDAV
+pref-webdav-root = Root
+pref-webdav-credentials = Credentials
+pref-webdav-save = Save
+pref-webdav-clear = Clear
+pref-webdav-verify = Verify
+pref-collections = Collections
 pref-help = { $name } Build { $version } { $time }

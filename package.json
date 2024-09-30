@@ -1,23 +1,23 @@
 {
-  "name": "zotero-plugin-template",
-  "version": "2.0.2-beta.3",
-  "description": "Zotero Plugin Template",
+  "name": "zotherd",
+  "version": "0.0.0",
+  "description": "ZotHerd",
   "config": {
-    "addonName": "Zotero Plugin Template",
-    "addonID": "addontemplate@euclpts.com",
-    "addonRef": "addontemplate",
-    "addonInstance": "AddonTemplate",
-    "prefsPrefix": "extensions.zotero.addontemplate"
+    "addonName": "ZotHerd",
+    "addonID": "zotherd@gaoweihe",
+    "addonRef": "zotherd",
+    "addonInstance": "ZotHerd",
+    "prefsPrefix": "extensions.zotero.zotherd"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/windingwind/zotero-plugin-template.git"
+    "url": "git+https://github.com/gaoweihe/zotherd.git"
   },
-  "author": "windingwind",
+  "author": "gaoweihe",
   "bugs": {
-    "url": "https://github.com/windingwind/zotero-plugin-template/issues"
+    "url": "https://github.com/gaoweihe/zotherd.git"
   },
-  "homepage": "https://github.com/windingwind/zotero-plugin-template#readme",
+  "homepage": "https://github.com/gaoweihe/zotherd#readme",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "zotero-plugin serve",
@@ -28,11 +28,16 @@
     "update-deps": "npm update --save"
   },
   "dependencies": {
+    "@types/concat-stream": "^2.0.3",
+    "concat-stream": "^2.0.0",
+    "fs": "^0.0.1-security",
+    "toml": "^3.0.0",
+    "webdav": "^5.7.1",
     "zotero-plugin-toolkit": "^3.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
-    "@types/node": "^22.5.0",
+    "@types/node": "^22.7.4",
     "eslint": "^9.9.1",
     "prettier": "^3.3.3",
     "typescript": "^5.5.4",

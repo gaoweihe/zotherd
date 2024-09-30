@@ -5,6 +5,9 @@ import {
   PromptExampleFactory,
   UIExampleFactory,
 } from "./modules/examples";
+import {
+  ZotherdFactory
+} from "./modules/zotherd"
 import { config } from "../package.json";
 import { getString, initLocale } from "./utils/locale";
 import { registerPrefsScripts } from "./modules/preferenceScript";
@@ -19,7 +22,8 @@ async function onStartup() {
 
   initLocale();
 
-  BasicExampleFactory.registerPrefs();
+  // BasicExampleFactory.registerPrefs(); 
+  ZotherdFactory.registerPrefs(); 
 
   BasicExampleFactory.registerNotifier();
 
@@ -82,7 +86,7 @@ async function onMainWindowLoad(win: Window): Promise<void> {
   });
   popupWin.startCloseTimer(5000);
 
-  addon.hooks.onDialogEvents("dialogExample");
+  // addon.hooks.onDialogEvents("dialogExample");
 }
 
 async function onMainWindowUnload(win: Window): Promise<void> {
