@@ -1,21 +1,22 @@
 import { config } from "../../package.json";
 import { getString } from "../utils/locale";
-import { AuthType, createClient } from "webdav"; 
-import { getPref, setPref } from "../utils/prefs"; 
+import { AuthType, createClient } from "webdav";
+import { getPref, setPref } from "../utils/prefs";
+import { ZotherdFactory } from "./zotherd";
 
 export async function registerPrefsScripts(_window: Window) {
   // This function is called when the prefs window is opened
   // See addon/chrome/content/preferences.xul onpaneload
-  const webdav_root: string = getPref("webdav-root") as string; 
-  const webdav_username: string = getPref("webdav-username") as string; 
-  const webdav_password: string = getPref("webdav-password") as string; 
+  const webdav_root: string = getPref("webdav-root") as string;
+  const webdav_username: string = getPref("webdav-username") as string;
+  const webdav_password: string = getPref("webdav-password") as string;
 
   if (!addon.data.prefs) {
     addon.data.prefs = {
-      window: _window, 
-      webdav_root: webdav_root, 
-      webdav_username: webdav_username, 
-      webdav_password: webdav_password, 
+      window: _window,
+      webdav_root: webdav_root,
+      webdav_username: webdav_username,
+      webdav_password: webdav_password,
       columns: [
         {
           dataKey: "title",
@@ -55,15 +56,15 @@ async function updatePrefsUI() {
   // with addon.data.prefs.window.document
   // Or bind some events to the elements
   const renderLock = ztoolkit.getGlobal("Zotero").Promise.defer();
-  if (addon.data.prefs?.window == undefined) return; 
+  if (addon.data.prefs?.window == undefined) return;
 
-  // const curr_doc = addon.data.prefs.window.document; 
-  // const webdav_root_element = curr_doc.getElementById(`${config.addonRef}-webdav-root`); 
-  // const webdav_username_element = curr_doc.getElementById(`${config.addonRef}-webdav-username`); 
-  // const webdav_password_element = curr_doc.getElementById(`${config.addonRef}-webdav-password`); 
-  // webdav_root_element.value = addon.data.prefs?.webdav_root; 
-  // webdav_username_element.value = addon.data.prefs?.webdav_username; 
-  // webdav_password_element.value = addon.data.prefs?.webdav_password; 
+  // const curr_doc = addon.data.prefs.window.document;
+  // const webdav_root_element = curr_doc.getElementById(`${config.addonRef}-webdav-root`);
+  // const webdav_username_element = curr_doc.getElementById(`${config.addonRef}-webdav-username`);
+  // const webdav_password_element = curr_doc.getElementById(`${config.addonRef}-webdav-password`);
+  // webdav_root_element.value = addon.data.prefs?.webdav_root;
+  // webdav_username_element.value = addon.data.prefs?.webdav_username;
+  // webdav_password_element.value = addon.data.prefs?.webdav_password;
 
   const tableHelper = new ztoolkit.VirtualizedTable(addon.data.prefs?.window)
     .setContainerId(`${config.addonRef}-table-container`)
@@ -153,11 +154,9 @@ function bindPrefEvents() {
     )
     ?.addEventListener("change", (e) => {
       ztoolkit.log(e);
-      const content = (e.target as HTMLInputElement).value; 
-      setPref("webdav-root", content); 
-      addon.data.prefs!.window.alert(
-        `Successfully changed to ${content}!`,
-      ); 
+      const content = (e.target as HTMLInputElement).value;
+      setPref("webdav-root", content);
+      addon.data.prefs!.window.alert(`Successfully changed to ${content}!`);
     });
 
   addon.data
@@ -166,11 +165,9 @@ function bindPrefEvents() {
     )
     ?.addEventListener("change", (e) => {
       ztoolkit.log(e);
-      const content = (e.target as HTMLInputElement).value; 
-      setPref("webdav-username", content); 
-      addon.data.prefs!.window.alert(
-        `Successfully changed to ${content}!`,
-      ); 
+      const content = (e.target as HTMLInputElement).value;
+      setPref("webdav-username", content);
+      addon.data.prefs!.window.alert(`Successfully changed to ${content}!`);
     });
 
   addon.data
@@ -179,11 +176,9 @@ function bindPrefEvents() {
     )
     ?.addEventListener("change", (e) => {
       ztoolkit.log(e);
-      const content = (e.target as HTMLInputElement).value; 
-      setPref("webdav-password", content); 
-      addon.data.prefs!.window.alert(
-        `Successfully changed to ${content}!`,
-      ); 
+      const content = (e.target as HTMLInputElement).value;
+      setPref("webdav-password", content);
+      addon.data.prefs!.window.alert(`Successfully changed to ${content}!`);
     });
 
   addon.data
@@ -192,35 +187,36 @@ function bindPrefEvents() {
     )
     ?.addEventListener("click", (e) => {
       ztoolkit.log(e);
-      addon.data.prefs!.window.alert(
-        `Verify`,
-      ); 
+      addon.data.prefs!.window.alert(`Verify`);
 
-      const webdav_root = getPref("webdav-root") as string; 
-      const webdav_username = getPref("webdav-username") as string; 
-      const webdav_password = getPref("webdav-password") as string; 
+      ZotherdFactory.resetWebDAVClient();
 
-      ztoolkit.log(webdav_root); 
-      ztoolkit.log(webdav_username); 
-      ztoolkit.log(webdav_password); 
+      const webdav_root = getPref("webdav-root") as string;
+      const webdav_username = getPref("webdav-username") as string;
+      const webdav_password = getPref("webdav-password") as string;
 
-      const client = createClient(webdav_root, {
+      ztoolkit.log(webdav_root);
+      ztoolkit.log(webdav_username);
+      ztoolkit.log(webdav_password);
+
+      const verify_client = createClient(webdav_root, {
         authType: AuthType.Auto,
         username: webdav_username,
-        password: webdav_password
-      }); 
+        password: webdav_password,
+      });
 
       (async () => {
         try {
-          const contents = await client.getDirectoryContents("/");
+          const contents = await verify_client.getDirectoryContents("/");
           ztoolkit.log(contents);
         } catch (error) {
           ztoolkit.log(error);
         }
-      })(); 
+      })();
 
-      // const directoryItems = client.getDirectoryContents("/"); 
-      // ztoolkit.log(directoryItems); 
+      ZotherdFactory.startWebDAVClient();
 
+      // const directoryItems = client.getDirectoryContents("/");
+      // ztoolkit.log(directoryItems);
     });
 }

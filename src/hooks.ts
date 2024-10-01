@@ -129,7 +129,12 @@ async function onNotify(
     event == "add" &&
     type == "item"
   ) {
-    ZotherdFactory.onAddItem(event, type, ids, extraData); 
+    await ZotherdFactory.onAddItem(event, type, ids, extraData); 
+  } else if (
+    event == "delete" &&
+    type == "item"
+  ) {
+    await ZotherdFactory.onDeleteItem(event, type, ids, extraData); 
   }
 }
 
