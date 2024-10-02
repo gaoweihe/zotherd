@@ -150,6 +150,17 @@ function bindPrefEvents() {
 
   addon.data
     .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-local-storage-root`,
+    )
+    ?.addEventListener("change", (e) => {
+      ztoolkit.log(e);
+      const content = (e.target as HTMLInputElement).value;
+      setPref("local-storage-root", content);
+      addon.data.prefs!.window.alert(`Successfully changed to ${content}!`);
+    });
+
+  addon.data
+    .prefs!.window.document.querySelector(
       `#zotero-prefpane-${config.addonRef}-webdav-root`,
     )
     ?.addEventListener("change", (e) => {

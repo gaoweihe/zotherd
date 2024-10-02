@@ -16,10 +16,6 @@ export class ZotherdFactory {
     const webdav_username = getPref("webdav-username") as string;
     const webdav_password = getPref("webdav-password") as string;
 
-    ztoolkit.log(webdav_root);
-    ztoolkit.log(webdav_username);
-    ztoolkit.log(webdav_password);
-
     const client = createClient(webdav_root, {
       authType: AuthType.Auto,
       username: webdav_username,
@@ -102,7 +98,9 @@ export class ZotherdFactory {
     ids: Array<string | number>,
     extraData: { [key: string]: any },
   ) {
-    ztoolkit.log("");
+    ztoolkit.log("OnAddItem", event, type, ids, extraData);
+
+    const localStorageRoot = getPref("local-storage-root") as string;
 
     const isWebDAVClientOn = ZotherdFactory.checkWebDAVClient();
     if (!isWebDAVClientOn) {
@@ -110,7 +108,6 @@ export class ZotherdFactory {
     }
 
     for (const itemID of ids) {
-      ztoolkit.log(itemID);
       const item = Zotero.Items.get(itemID);
       if (!item) {
         continue;
@@ -123,28 +120,37 @@ export class ZotherdFactory {
         }
         const parentItem = await Zotero.Items.getAsync(parentKey);
 
-        if (
-          (await ZotherdFactory.webdav_client?.exists("/" + parentItem.key)) ===
-          false
-        ) {
-          await ZotherdFactory.webdav_client?.createDirectory(
-            "/" + parentItem.key,
-          );
-        }
+        // if (
+        //   (await ZotherdFactory.webdav_client?.exists("/" + parentItem.key)) ===
+        //   false
+        // ) {
+        //   await ZotherdFactory.webdav_client?.createDirectory(
+        //     "/" + parentItem.key,
+        //   );
+        // }
 
+        // get file location
         const filePath = item.getFilePath();
-        ztoolkit.log(filePath);
+        ztoolkit.log("File path: " + filePath);
 
         // Set the attachment link mode
         item.attachmentLinkMode = Zotero.Attachments.LINK_MODE_LINKED_FILE;
 
         // Copy the attachment to the subdirectory
         const file = Zotero.File.pathToFile(filePath);
-        const targetPath = Zotero.File.pathToFile("C:\\zotherd");
-        file.moveTo(targetPath, "test.pdf");
+        let targetFolderPath = localStorageRoot + parentItem.key.toString();
+        ztoolkit.log("Target path: " + targetFolderPath);
+        targetFolderPath = targetFolderPath.replace(/\//g, "\\");
+        ztoolkit.log("Target path: " + targetFolderPath);
+        const targetFolder = Zotero.File.pathToFile(targetFolderPath);
+        const fileName = item.key.toString() + ".pdf";
+        file.moveTo(targetFolder, fileName);
 
         // Set the attachment path in the item
-        item.attachmentPath = "C:\\zotherd\\test.pdf";
+        let targetFilePath = targetFolderPath + "\\" + fileName;
+        targetFilePath = targetFilePath.replace(/\//g, "\\");
+        ztoolkit.log("Target file path: " + targetFilePath);
+        item.attachmentPath = targetFilePath;
 
         // Save the item
         item.saveTx();
@@ -158,8 +164,6 @@ export class ZotherdFactory {
     ids: Array<string | number>,
     extraData: { [key: string]: any },
   ) {
-    ztoolkit.log("");
-
     const isWebDAVClientOn = ZotherdFactory.checkWebDAVClient();
     if (!isWebDAVClientOn) {
       return;

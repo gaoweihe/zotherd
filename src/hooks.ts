@@ -5,9 +5,7 @@ import {
   PromptExampleFactory,
   UIExampleFactory,
 } from "./modules/examples";
-import {
-  ZotherdFactory
-} from "./modules/zotherd"
+import { ZotherdFactory } from "./modules/zotherd";
 import { config } from "../package.json";
 import { getString, initLocale } from "./utils/locale";
 import { registerPrefsScripts } from "./modules/preferenceScript";
@@ -22,8 +20,8 @@ async function onStartup() {
 
   initLocale();
 
-  // BasicExampleFactory.registerPrefs(); 
-  ZotherdFactory.registerPrefs(); 
+  // BasicExampleFactory.registerPrefs();
+  ZotherdFactory.registerPrefs();
 
   ZotherdFactory.registerNotifier();
 
@@ -113,7 +111,7 @@ async function onNotify(
   extraData: { [key: string]: any },
 ) {
   // You can add your code to the corresponding notify type
-  ztoolkit.log("notify", event, type, ids, extraData);
+  ztoolkit.log("OnNotify", event, type, ids, extraData);
 
   // if (
   //   event == "select" &&
@@ -122,19 +120,13 @@ async function onNotify(
   // ) {
   //   BasicExampleFactory.exampleNotifierCallback();
   // } else {
-  //   return; 
+  //   return;
   // }
 
-  if (
-    event == "add" &&
-    type == "item"
-  ) {
-    await ZotherdFactory.onAddItem(event, type, ids, extraData); 
-  } else if (
-    event == "delete" &&
-    type == "item"
-  ) {
-    await ZotherdFactory.onDeleteItem(event, type, ids, extraData); 
+  if (event == "add" && type == "item") {
+    await ZotherdFactory.onAddItem(event, type, ids, extraData);
+  } else if (event == "delete" && type == "item") {
+    await ZotherdFactory.onDeleteItem(event, type, ids, extraData);
   }
 }
 
